@@ -3,6 +3,19 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Text.Json;
 
+if(args.Length == 2 && args[0] == "--live")
+{
+ using var client=new HttpClient(new HttpClientHandler { AllowAutoRedirect=false }) { Timeout=TimeSpan.FromMinutes(5) };
+ var service=new UpdateService(client);
+ var endpoint=new Uri("https://raw.githubusercontent.com/onlynextstep/pingda/main/updates/latest.json");
+ var update=await service.CheckAsync(endpoint,new Version(0,6,0)) ?? throw new Exception("旧版本未发现更新");
+ if(await service.CheckAsync(endpoint,new Version(0,6,1)) != null) throw new Exception("同版本错误通知升级");
+ var download=await service.DownloadAsync(update,args[1],null,CancellationToken.None);
+ Console.WriteLine("PASS 公开端点发现0.6.1、同版不重复提示、真实下载与SHA256校验");
+ Console.WriteLine(download);
+ return 0;
+}
+
 var bytes = new byte[] { 77, 90, 1, 2, 3 };
 var release = new UpdateRelease("0.6.2", "修复屏幕切换", "https://updates.example.com/setup.exe", bytes.Length, Convert.ToHexString(SHA256.HashData(bytes)));
 int failures = 0;

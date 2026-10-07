@@ -8,6 +8,8 @@
 
 MSIX打包需采用Partner Center分配的Package Identity Name、Publisher和Publisher Display Name。身份值不能根据GitHub名称猜测。
 
+`store/AppxManifest.template.xml` 和 `scripts/Build-StorePackage.ps1` 提供打包入口。输入已验证的自包含Payload、Windows SDK的makeappx.exe和商店分配的三个身份值，输出未签名MSIX。开发测试身份不能作为正式上架身份。
+
 ## 上架所需材料
 
 - Partner Center账户和“屏搭”的产品身份。
