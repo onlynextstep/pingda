@@ -1,0 +1,28 @@
+name: 问题反馈
+description: 报告切屏、安装、更新或界面问题
+title: "[问题] "
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: 发生了什么
+      description: 写出操作步骤、预期结果和实际结果。
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: 屏搭版本
+      placeholder: 0.6.1
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: 系统与屏幕
+      description: Windows版本、显卡/驱动、屏幕数量和连接方式。
+  - type: textarea
+    id: details
+    attributes:
+      label: 错误信息
+      description: 可附截图或经过检查的诊断信息；请去掉个人内容和设备序列号。

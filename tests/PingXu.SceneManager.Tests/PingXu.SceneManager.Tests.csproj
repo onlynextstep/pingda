@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <StartupObject>PingXu.SceneManager.Tests.SceneManagerTestRunner</StartupObject>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/PingXu.Core/PingXu.Core.csproj" />
+    <!-- Production Dialogs only; no App startup, MainWindow or Windows display backend. -->
+    <Compile Include="../../src/PingXu.App/Dialogs.cs" Link="Production/Dialogs.cs" />
+    <Compile Include="../PingXu.App.Tests/DialogUiTests.cs" Link="Regression/DialogUiTests.cs" />
+  </ItemGroup>
+</Project>

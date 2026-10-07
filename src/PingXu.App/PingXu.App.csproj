@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType><TargetFramework>net9.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF><UseWindowsForms>true</UseWindowsForms><Nullable>enable</Nullable><ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>PingXu</AssemblyName><AssemblyTitle>屏搭</AssemblyTitle><StartupObject>PingXu.App.Program</StartupObject>
+    <ApplicationManifest>app.manifest</ApplicationManifest><ApplicationIcon>Assets/PingXu.ico</ApplicationIcon>
+    <Version>0.6.1</Version><Product>屏搭 · 多屏工作空间</Product><Description>本地 Windows 多屏布局与场景管理工具</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../PingXu.Core/PingXu.Core.csproj"/><ProjectReference Include="../PingXu.Windows/PingXu.Windows.csproj"/>
+    <Resource Include="Assets/PingXu.ico"/><Resource Include="Assets/pingxu-icon.png"/>
+    <EmbeddedResource Include="Assets/Numbers/*.png" LogicalName="PingXu.Numbers.%(Filename)%(Extension)" />
+  </ItemGroup>
+</Project>

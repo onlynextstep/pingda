@@ -1,0 +1,6 @@
+artifacts/build/
+artifacts/dotnet-home/
+artifacts/nuget-*/
+artifacts/isolated-data/
+bin/
+obj/

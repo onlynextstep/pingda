@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <DefaultItemExcludes>$(DefaultItemExcludes);artifacts/**</DefaultItemExcludes>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/PingXu.Core/PingXu.Core.csproj" />
+    <Compile Include="../../src/PingXu.App/NumberArtwork.cs" Link="Production/NumberArtwork.cs" />
+    <EmbeddedResource Include="../../src/PingXu.App/Assets/Numbers/*.png" LogicalName="PingXu.Numbers.%(Filename)%(Extension)" />
+    <!-- Compile the production component without App startup, Theme or native display services. -->
+    <Compile Include="../../src/PingXu.App/StudioDrawing.cs" Link="Production/StudioDrawing.cs"
+             Condition="Exists('../../src/PingXu.App/StudioDrawing.cs')" />
+  </ItemGroup>
+</Project>

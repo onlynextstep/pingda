@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <title>屏搭 · 正方形切角双屏定稿</title>
+  <defs><mask id="silhouette"><rect width="512" height="512" fill="white"/><polygon points="400,0 512,0 512,112" fill="black"/></mask></defs>
+  <rect x="16" y="16" width="480" height="480" rx="28" fill="#DCFF42" mask="url(#silhouette)"/>
+  <polygon points="400,0 512,0 512,112" fill="none"/>
+  <rect x="62" y="106" width="140" height="220" rx="9" fill="#151616"/>
+  <rect x="224" y="160" width="226" height="166" rx="9" fill="#151616"/>
+  <rect x="118" y="316" width="38" height="52" fill="#151616"/>
+  <rect x="318" y="316" width="38" height="52" fill="#151616"/>
+  <rect x="90" y="358" width="324" height="38" rx="9" fill="#151616"/>
+</svg>
