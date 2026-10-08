@@ -40,10 +40,16 @@ public static class Dialogs
     }
     public static void ShowFailure(Window owner, string title, string explanation, string outcome, string nextStep, string details)
     {
+        var existing = owner.OwnedWindows.Cast<Window>().FirstOrDefault(w => Equals(w.Tag, "PingDa.Failure"));
+        if (existing != null) { existing.Activate(); return; }
         var window = Shell(owner, title, 570, 440);
+        window.Tag = "PingDa.Failure";
         window.ResizeMode = ResizeMode.CanResize; window.MinWidth = 360; window.MinHeight = 300;
         window.Content = CreateFailureContent(title, explanation, outcome, nextStep, details, window.Close);
-        window.ShowDialog();
+        DependencyPropertyChangedEventHandler visibilityChanged = (_, _) => { if (!owner.IsVisible) window.Close(); };
+        owner.IsVisibleChanged += visibilityChanged;
+        window.Closed += (_, _) => owner.IsVisibleChanged -= visibilityChanged;
+        window.Show();
     }
 
     // Testable content factory: no display calls, file writes or clipboard access.

@@ -52,7 +52,12 @@ public static class Program
             if (args.Length == 2 && args[0] == "--guardian") return Guardian.Run(args[1]);
             if (args.Length == 2 && args[0] == "--diagnose") { var s = new WindowsDisplayService().Capture(); ProfileStore.AtomicWrite(args[1], JsonSerializer.Serialize(s, ProfileStore.Json)); return 0; }
             using var mutex = new Mutex(true, "Local\\PingXu.Desktop." + Environment.UserName, out bool first);
-            if (!first) { System.Windows.MessageBox.Show("屏搭已在运行，请在任务栏右下角的托盘中打开。", "屏搭"); return 0; }
+            if (!first)
+            {
+                if (!InstanceActivation.TryActivate(InstanceActivation.Name))
+                    System.Windows.MessageBox.Show("屏搭正在启动，请稍后再次打开。", "屏搭");
+                return 0;
+            }
             // Display topology changes can invalidate the WPF/D3D render channel. This utility
             // does not need GPU rendering; select software before creating any WPF window.
             System.Windows.Media.RenderOptions.ProcessRenderMode = System.Windows.Interop.RenderMode.SoftwareOnly;
@@ -67,15 +72,23 @@ public static class Program
                 {
                     // A broken render channel cannot be repaired by dismissing a dialog.
                     // Exit only this UI process; the independent guardian retains recovery ownership.
-                    Environment.Exit(2);
+                    FatalProcessExit.Terminate(2);
                     return;
                 }
                 if (reporting) return;
                 reporting = true;
-                try { System.Windows.MessageBox.Show("操作未完成：" + e.Exception.Message, "屏搭"); }
+                try
+                {
+                    if (app.MainWindow is { } owner)
+                        Dialogs.ShowFailure(owner, "操作未完成", "这次操作遇到了错误。", "请关闭提示后重试。", "若再次出现，请反馈错误详情。", e.Exception.ToString());
+                    else System.Windows.MessageBox.Show("操作未完成：" + e.Exception.Message, "屏搭");
+                }
                 finally { reporting = false; }
             };
-            var window = new MainWindow(new WindowsDisplayService()); app.Run(window); return 0;
+            var window = new MainWindow(new WindowsDisplayService());
+            using var activation = new InstanceActivation(InstanceActivation.Name,
+                () => app.Dispatcher.BeginInvoke(new Action(window.OpenWindow)));
+            app.Run(window); return 0;
         }
         catch (Exception e) { Log(e); if (args.Length == 0) System.Windows.MessageBox.Show("启动失败：" + e.Message, "屏搭"); return 1; }
     }

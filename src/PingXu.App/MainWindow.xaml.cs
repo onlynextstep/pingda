@@ -100,7 +100,7 @@ public partial class MainWindow : Window
         trayIcon = BrandAssets.CreateTrayIcon();
         tray = new() { Icon = trayIcon, Visible = true, Text = "屏搭 · 多屏工作空间" }; tray.DoubleClick += (_, _) => OpenWindow(); RebuildTray();
     }
-    void OpenWindow() { Show(); WindowState = WindowState.Normal; Activate(); }
+    internal void OpenWindow() { if (exiting) return; Show(); if (WindowState == WindowState.Minimized) WindowState = WindowState.Normal; Activate(); }
     void RebuildTray()
     {
         if (tray == null) return; var menu = new System.Windows.Forms.ContextMenuStrip();
@@ -112,7 +112,9 @@ public partial class MainWindow : Window
         menu.Items.Add("打开屏搭", null, (_, _) => OpenWindow()); menu.Items.Add(new System.Windows.Forms.ToolStripSeparator());
         foreach (var p in profiles) { var item = menu.Items.Add(p.Name); item.Click += async (_, _) => await SwitchScene(p); }
         menu.Items.Add("恢复上次布局", null, (_, _) => Restore_Click(this, new RoutedEventArgs()));
-        menu.Items.Add(new System.Windows.Forms.ToolStripSeparator()); menu.Items.Add("退出", null, (_, _) => { if (busy) { Status("正在切换或等待确认，暂不能退出。"); OpenWindow(); return; } exiting = true; tray.Visible = false; tray.Dispose(); trayIcon?.Dispose(); System.Windows.Application.Current.Shutdown(); });
+        // The guardian restores an unconfirmed layout if its owner exits.
+        // Exiting the UI must not depend on a display operation becoming responsive.
+        menu.Items.Add(new System.Windows.Forms.ToolStripSeparator()); menu.Items.Add("退出", null, (_, _) => { exiting = true; tray.Visible = false; tray.Dispose(); trayIcon?.Dispose(); System.Windows.Application.Current.Shutdown(); });
         foreach (System.Windows.Forms.ToolStripItem item in menu.Items) { item.ForeColor = menu.ForeColor; item.Padding = new System.Windows.Forms.Padding(12,6,12,6); }
         var old = tray.ContextMenuStrip; tray.ContextMenuStrip = menu; old?.Dispose();
     }

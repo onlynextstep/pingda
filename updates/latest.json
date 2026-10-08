@@ -1,7 +1,7 @@
 {
   "version": "0.6.1",
-  "notes": "新增更新检查、下载校验和取消；修复重复渲染错误弹窗；设置面板不再锁住主窗口。此版本为内测版。",
+  "notes": "修复渲染故障后软件无法退出或重新打开的问题；再次启动可唤回窗口；错误提示不再锁住主窗口。此版本为内测版。",
   "url": "https://github.com/onlynextstep/pingda/releases/download/v0.6.1/PingDa-0.6.1-Setup.exe",
-  "size": 52657326,
-  "sha256": "6040b55f0c1178477016bbbb1e075fd7d0cc495b1353e0807b3105d7c1e5ee09"
+  "size": 52648743,
+  "sha256": "09d977034c9975c75919ef208a3d6cf50623d68c765de50faf242fcddc66f4f8"
 }
